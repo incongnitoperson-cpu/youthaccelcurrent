@@ -1,0 +1,1528 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#101925" />
+  <title>Youth Accelerator</title>
+  <meta name="description" content="Youth Accelerator is a global accelerator for ambitious young founders." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#101925;
+      --bg-2:#131F2D;
+      --bg-3:#172536;
+      --panel:rgba(255,255,255,.038);
+      --panel-hover:rgba(255,255,255,.058);
+      --line:rgba(255,255,255,.10);
+      --line-soft:rgba(255,255,255,.065);
+      --text:#F7F9FC;
+      --muted:#9AA6B5;
+      --muted-2:#697789;
+      --accent:#6F7CFF;
+      --accent-2:#A5ACFF;
+      --accent-soft:rgba(111,124,255,.12);
+      --accent-line:rgba(111,124,255,.34);
+      --danger:#FFB5C0;
+      --max:1180px;
+      --radius:26px;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      overflow-x:hidden;
+    }
+    body.modal-open{overflow:hidden}
+
+    a{color:inherit;text-decoration:none}
+    button,input,textarea,select{font:inherit}
+    button{cursor:pointer}
+    ::selection{background:var(--accent);color:#fff}
+
+    .page-bg{
+      position:fixed;
+      inset:0;
+      z-index:-2;
+      pointer-events:none;
+      background:
+        radial-gradient(circle at 50% -10%,rgba(111,124,255,.10),transparent 32%),
+        radial-gradient(circle at 95% 42%,rgba(111,124,255,.045),transparent 24%),
+        var(--bg);
+    }
+    .grid-overlay{
+      position:fixed;
+      inset:0;
+      z-index:-1;
+      pointer-events:none;
+      background-image:
+        linear-gradient(rgba(255,255,255,.017) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(255,255,255,.017) 1px,transparent 1px);
+      background-size:72px 72px;
+      -webkit-mask-image:linear-gradient(to bottom,#000,transparent 74%);
+      mask-image:linear-gradient(to bottom,#000,transparent 74%);
+    }
+
+    .container{
+      width:min(var(--max),calc(100% - 48px));
+      margin:0 auto;
+    }
+
+    .nav{
+      position:sticky;
+      top:0;
+      z-index:60;
+      background:rgba(16,25,37,.80);
+      border-bottom:1px solid var(--line-soft);
+      backdrop-filter:blur(18px);
+      -webkit-backdrop-filter:blur(18px);
+    }
+    .nav-inner{
+      height:72px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:20px;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:11px;
+      font-size:14px;
+      font-weight:700;
+      letter-spacing:-.02em;
+      transition:opacity .25s ease;
+    }
+    .brand:hover{opacity:.82}
+    .logo-mark{
+      width:32px;
+      height:32px;
+      border-radius:10px;
+      display:grid;
+      place-items:center;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.055);
+      font-size:11px;
+      font-weight:900;
+      letter-spacing:-.04em;
+    }
+    .nav-center{
+      display:flex;
+      align-items:center;
+      gap:28px;
+    }
+    .nav-center a{
+      font-size:14px;
+      color:var(--muted);
+      transition:color .25s ease;
+    }
+    .nav-center a:hover{color:#fff}
+    .nav-actions{
+      display:flex;
+      align-items:center;
+      gap:9px;
+    }
+
+    .btn{
+      min-height:42px;
+      padding:0 17px;
+      border-radius:11px;
+      border:none;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      font-size:14px;
+      font-weight:650;
+      transition:
+        transform .25s ease,
+        color .25s ease,
+        background .25s ease,
+        border-color .25s ease;
+    }
+    .btn:hover{transform:translateY(-1px)}
+    .btn-primary{
+      background:#EEF0F6;
+      color:#101725;
+    }
+    .btn-primary:hover{background:#E3E6FF}
+    .btn-accent{
+      background:var(--accent-soft);
+      color:#ECEEFF;
+      border:1px solid var(--accent-line);
+    }
+    .btn-accent:hover{
+      background:rgba(111,124,255,.18);
+      border-color:rgba(111,124,255,.52);
+    }
+    .btn-ghost{
+      color:#D9E0E9;
+      background:rgba(255,255,255,.035);
+      border:1px solid var(--line);
+    }
+    .btn-ghost:hover{
+      color:#fff;
+      background:rgba(255,255,255,.06);
+      border-color:rgba(111,124,255,.34);
+    }
+    .arrow{
+      width:16px;
+      height:16px;
+      flex:none;
+      transition:transform .25s ease;
+    }
+    .btn:hover .arrow{transform:translateX(3px)}
+
+    .hero{
+      padding:112px 0 112px;
+    }
+    .hero-copy{max-width:900px}
+    .pill-row{
+      display:flex;
+      flex-wrap:wrap;
+      align-items:center;
+      gap:10px;
+    }
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:7px 12px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.035);
+      color:var(--muted);
+      font-size:11px;
+      font-weight:560;
+      letter-spacing:.06em;
+    }
+    .pill.accent{
+      color:#EAECFF;
+      border-color:var(--accent-line);
+      background:var(--accent-soft);
+    }
+    .pill-dot{
+      width:6px;
+      height:6px;
+      border-radius:50%;
+      background:var(--accent);
+    }
+
+    h1,h2,h3,p{margin-top:0}
+    h1{
+      max-width:920px;
+      margin:28px 0 0;
+      font-size:clamp(48px,6.5vw,72px);
+      line-height:.98;
+      letter-spacing:-.055em;
+      font-weight:850;
+    }
+    .hero-em{
+      font-family:"Instrument Serif",Georgia,serif;
+      font-style:italic;
+      font-weight:400;
+      color:#D9DDFF;
+      letter-spacing:-.025em;
+    }
+    .hero-sub{
+      max-width:700px;
+      margin:28px 0 0;
+      color:var(--muted);
+      font-size:18px;
+      line-height:1.7;
+    }
+    .hero-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:11px;
+      margin-top:34px;
+    }
+
+    .facts{
+      margin-top:70px;
+      padding-top:28px;
+      border-top:1px solid var(--line);
+      display:grid;
+      grid-template-columns:1.2fr 1fr 1fr 1.15fr;
+      gap:26px;
+    }
+    .fact-value{
+      font-size:clamp(30px,4vw,46px);
+      line-height:1;
+      font-weight:820;
+      letter-spacing:-.05em;
+    }
+    .fact-value.serif{
+      font-family:"Instrument Serif",Georgia,serif;
+      font-style:italic;
+      font-weight:400;
+      letter-spacing:-.02em;
+    }
+    .fact-label{
+      margin-top:9px;
+      color:var(--muted-2);
+      font-size:13px;
+      line-height:1.45;
+    }
+
+    .section{
+      padding:104px 0;
+      border-top:1px solid var(--line-soft);
+    }
+    .editorial{
+      margin-bottom:16px;
+      font-family:"Instrument Serif",Georgia,serif;
+      font-size:18px;
+      font-style:italic;
+      color:var(--accent-2);
+    }
+    .section-title{
+      max-width:800px;
+      margin:0;
+      font-size:clamp(36px,4.8vw,54px);
+      line-height:1.04;
+      letter-spacing:-.048em;
+      font-weight:820;
+    }
+    .section-copy{
+      max-width:680px;
+      margin-top:20px;
+      color:var(--muted);
+      font-size:16px;
+      line-height:1.72;
+    }
+
+    .bento{
+      margin-top:54px;
+      display:grid;
+      grid-template-columns:repeat(12,1fr);
+      gap:15px;
+    }
+    .card{
+      position:relative;
+      overflow:hidden;
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      background:var(--panel);
+      padding:30px;
+      backdrop-filter:blur(12px);
+      -webkit-backdrop-filter:blur(12px);
+      transition:transform .25s ease,border-color .25s ease,background .25s ease;
+    }
+    .card:hover{
+      transform:translateY(-2px);
+      background:var(--panel-hover);
+      border-color:rgba(111,124,255,.28);
+    }
+    .card-kicker{
+      font-family:"Instrument Serif",Georgia,serif;
+      font-style:italic;
+      color:var(--accent-2);
+      font-size:17px;
+    }
+    .card h3{
+      margin:13px 0 0;
+      max-width:590px;
+      font-size:27px;
+      line-height:1.12;
+      letter-spacing:-.038em;
+    }
+    .card p{
+      margin:14px 0 0;
+      max-width:590px;
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.72;
+    }
+    .mentor-card{grid-column:span 7;min-height:400px}
+    .network-card{grid-column:span 5;min-height:260px}
+    .funding-card{grid-column:span 5;min-height:260px}
+    .example-card{
+      grid-column:span 7;
+      min-height:260px;
+      background:linear-gradient(135deg,rgba(111,124,255,.09),rgba(255,255,255,.025));
+    }
+    .origins-card{grid-column:span 5;min-height:260px}
+
+    .match-ui{
+      margin-top:30px;
+      overflow:hidden;
+      border:1px solid var(--line);
+      border-radius:17px;
+      background:rgba(6,10,16,.22);
+    }
+    .match-head{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      padding:12px 14px;
+      border-bottom:1px solid var(--line-soft);
+      color:var(--muted-2);
+      font-size:10px;
+      text-transform:uppercase;
+      letter-spacing:.12em;
+    }
+    .match-dot{
+      width:7px;
+      height:7px;
+      display:inline-block;
+      margin-right:7px;
+      border-radius:50%;
+      background:var(--accent);
+    }
+    .match-body{
+      display:grid;
+      grid-template-columns:1fr auto 1fr;
+      gap:14px;
+      align-items:center;
+      padding:18px;
+    }
+    .match-panel{
+      padding:14px;
+      border:1px solid var(--line);
+      border-radius:14px;
+      background:rgba(255,255,255,.028);
+    }
+    .match-label{
+      color:var(--muted-2);
+      font-size:10px;
+      text-transform:uppercase;
+      letter-spacing:.10em;
+    }
+    .match-name{
+      margin-top:8px;
+      font-size:14px;
+      font-weight:700;
+    }
+    .match-chips{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      margin-top:10px;
+    }
+    .match-chips span{
+      padding:5px 8px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.02);
+      color:#CFD7E1;
+      font-size:10px;
+    }
+    .match-arrow{color:var(--accent-2);font-size:20px}
+
+    .origin-grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:8px;
+      margin-top:24px;
+    }
+    .origin{
+      min-height:56px;
+      display:grid;
+      place-items:center;
+      text-align:center;
+      border:1px solid var(--line);
+      border-radius:13px;
+      background:rgba(255,255,255,.028);
+      color:#D6DDE7;
+      font-size:12px;
+      font-weight:600;
+      transition:border-color .25s ease,color .25s ease,background .25s ease;
+    }
+    .origin:hover{
+      color:#fff;
+      background:rgba(255,255,255,.045);
+      border-color:rgba(111,124,255,.34);
+    }
+
+    .funding-note{
+      margin-top:22px;
+      padding:14px 16px;
+      border-left:2px solid var(--accent);
+      background:rgba(111,124,255,.05);
+      color:#D7DEE8;
+      font-size:13px;
+      line-height:1.65;
+    }
+    .quote{
+      margin-top:17px!important;
+      font-family:"Instrument Serif",Georgia,serif!important;
+      font-size:27px!important;
+      font-weight:400!important;
+      line-height:1.28!important;
+      letter-spacing:-.015em!important;
+      color:#F3F5FA!important;
+    }
+
+    .principle-card{
+      display:flex;
+      flex-direction:column;
+      justify-content:flex-end;
+      min-height:260px;
+    }
+    .principle-copy{
+      max-width:700px!important;
+      margin-top:18px!important;
+      font-family:"Instrument Serif",Georgia,serif!important;
+      font-size:29px!important;
+      line-height:1.28!important;
+      letter-spacing:-.018em!important;
+      color:#F1F3F8!important;
+    }
+
+
+    .cohort-layout{
+      display:grid;
+      grid-template-columns:.95fr 1.05fr;
+      gap:72px;
+      align-items:start;
+    }
+    .cohort-highlight{
+      margin-top:28px;
+      padding:24px;
+      border:1px solid var(--line);
+      border-radius:20px;
+      background:rgba(255,255,255,.028);
+    }
+    .cohort-highlight strong{
+      display:block;
+      font-size:22px;
+      letter-spacing:-.03em;
+    }
+    .cohort-highlight span{
+      display:block;
+      margin-top:7px;
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.55;
+    }
+    .plain-steps{border-top:1px solid var(--line)}
+    .plain-step{
+      display:grid;
+      grid-template-columns:46px 1fr;
+      gap:14px;
+      padding:21px 0;
+      border-bottom:1px solid var(--line-soft);
+    }
+    .plain-num{
+      color:var(--accent-2);
+      font:600 11px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;
+    }
+    .plain-step h3{
+      margin:0;
+      font-size:18px;
+      letter-spacing:-.025em;
+    }
+    .plain-step p{
+      margin:7px 0 0;
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.62;
+    }
+
+
+    .event-timeline{
+      position:relative;
+      margin-top:56px;
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+    }
+    .event-timeline::before{
+      content:"";
+      position:absolute;
+      left:0;
+      right:0;
+      top:17px;
+      height:1px;
+      background:var(--line);
+    }
+    .timeline-event{
+      position:relative;
+      min-height:240px;
+      padding-right:26px;
+    }
+    .timeline-event + .timeline-event{
+      padding-left:26px;
+      border-left:1px solid var(--line-soft);
+    }
+    .timeline-dot{
+      position:relative;
+      z-index:2;
+      width:35px;
+      height:35px;
+      display:grid;
+      place-items:center;
+      border-radius:50%;
+      border:1px solid var(--accent-line);
+      background:var(--bg);
+      color:#E5E8FF;
+      font-size:10px;
+      font-weight:700;
+    }
+    .timeline-date{
+      margin-top:29px;
+      color:var(--accent-2);
+      font-family:"Instrument Serif",Georgia,serif;
+      font-size:18px;
+      font-style:italic;
+    }
+    .timeline-location{
+      margin-top:11px;
+      color:var(--muted-2);
+      font-size:10px;
+      text-transform:uppercase;
+      letter-spacing:.13em;
+    }
+    .timeline-event h3{
+      margin:9px 0 0;
+      font-size:24px;
+      line-height:1.18;
+      letter-spacing:-.035em;
+    }
+    .timeline-event p{
+      max-width:330px;
+      margin:12px 0 0;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.7;
+    }
+
+    .team-list{
+      margin-top:50px;
+      border-top:1px solid var(--line);
+    }
+    .team-row{
+      display:grid;
+      grid-template-columns:1.2fr 1fr auto;
+      gap:22px;
+      align-items:center;
+      padding:20px 3px;
+      border-bottom:1px solid var(--line-soft);
+      transition:padding .25s ease,background .25s ease;
+    }
+    .team-row:hover{
+      padding-left:10px;
+      background:rgba(255,255,255,.018);
+    }
+    .team-name{
+      font-size:19px;
+      font-weight:700;
+      letter-spacing:-.025em;
+    }
+    .team-role{
+      color:var(--muted);
+      font-size:14px;
+    }
+    .team-chevron{
+      color:var(--muted-2);
+      transition:transform .25s ease,color .25s ease;
+    }
+    .team-row:hover .team-chevron{
+      color:var(--accent-2);
+      transform:translateX(4px);
+    }
+
+    .cta-card{
+      position:relative;
+      overflow:hidden;
+      padding:48px;
+      border:1px solid var(--accent-line);
+      border-radius:30px;
+      background:linear-gradient(135deg,rgba(111,124,255,.13),rgba(255,255,255,.028));
+    }
+    .cta-card h2{
+      max-width:710px;
+      margin:16px 0 0;
+      font-size:clamp(38px,4.8vw,52px);
+      line-height:1.04;
+      letter-spacing:-.048em;
+    }
+    .cta-card p{
+      max-width:620px;
+      margin:18px 0 0;
+      color:var(--muted);
+      font-size:16px;
+      line-height:1.65;
+    }
+    .cta-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:11px;
+      margin-top:28px;
+    }
+
+    footer{
+      padding:28px 0;
+      border-top:1px solid var(--line-soft);
+    }
+    .footer-inner{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:22px;
+      color:var(--muted-2);
+      font-size:13px;
+    }
+    .footer-links{
+      display:flex;
+      gap:18px;
+    }
+    .footer-links button,
+    .footer-links a{
+      padding:0;
+      border:0;
+      background:none;
+      color:var(--muted-2);
+      font-size:13px;
+      cursor:pointer;
+      transition:color .25s ease;
+    }
+    .footer-links button:hover,
+    .footer-links a:hover{color:#fff}
+
+    .modal{
+      display:none;
+      position:fixed;
+      inset:0;
+      z-index:100;
+      padding:24px;
+      place-items:center;
+      background:rgba(5,9,14,.70);
+      backdrop-filter:blur(16px);
+      -webkit-backdrop-filter:blur(16px);
+    }
+    .modal.open{display:grid}
+    .modal-card{
+      position:relative;
+      width:min(680px,100%);
+      max-height:92vh;
+      overflow:auto;
+      padding:30px;
+      border:1px solid var(--line);
+      border-radius:28px;
+      background:rgba(19,31,45,.985);
+    }
+    .modal-card.contact-card{width:min(760px,100%)}
+    .modal-close{
+      position:absolute;
+      right:18px;
+      top:18px;
+      width:39px;
+      height:39px;
+      display:grid;
+      place-items:center;
+      border-radius:50%;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.04);
+      color:var(--muted);
+      font-size:22px;
+      line-height:1;
+      transition:all .25s ease;
+    }
+    .modal-close:hover{
+      color:#fff;
+      background:rgba(255,255,255,.08);
+      border-color:rgba(255,255,255,.2);
+    }
+    .modal h2{
+      max-width:520px;
+      margin:22px 46px 0 0;
+      font-size:34px;
+      line-height:1.05;
+      letter-spacing:-.042em;
+    }
+    .modal-intro{
+      max-width:580px;
+      margin:15px 0 0;
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.68;
+    }
+
+    .contact-direct{
+      margin-top:24px;
+      padding:16px 18px;
+      border:1px solid var(--line);
+      border-radius:15px;
+      background:rgba(255,255,255,.025);
+    }
+    .contact-direct-label{
+      color:var(--muted-2);
+      font-size:10px;
+      text-transform:uppercase;
+      letter-spacing:.12em;
+    }
+    .contact-direct a{
+      display:inline-block;
+      margin-top:7px;
+      color:#EFF1FF;
+      font-size:18px;
+      font-weight:700;
+      letter-spacing:-.025em;
+      transition:color .25s ease;
+    }
+    .contact-direct a:hover{color:var(--accent-2)}
+
+    .form{
+      display:grid;
+      gap:16px;
+      margin-top:26px;
+    }
+    .form-row{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:14px;
+    }
+    label{
+      color:#D3DAE4;
+      font-size:12px;
+      font-weight:600;
+    }
+    input,textarea,select{
+      width:100%;
+      margin-top:7px;
+      padding:13px 14px;
+      border:1px solid var(--line);
+      border-radius:12px;
+      outline:none;
+      background:rgba(255,255,255,.035);
+      color:#fff;
+      transition:border-color .25s ease,background .25s ease,box-shadow .25s ease;
+    }
+    select option{background:#13202E;color:#fff}
+    input::placeholder,textarea::placeholder{color:#5D6877}
+    input:focus,textarea:focus,select:focus{
+      border-color:rgba(111,124,255,.52);
+      background:rgba(255,255,255,.055);
+      box-shadow:0 0 0 3px rgba(111,124,255,.08);
+    }
+    textarea{resize:vertical;min-height:112px}
+    .submit{
+      width:100%;
+      min-height:49px;
+    }
+    .form-error{
+      display:none;
+      padding:11px 13px;
+      border:1px solid rgba(255,120,140,.2);
+      border-radius:11px;
+      background:rgba(255,120,140,.06);
+      color:var(--danger);
+      font-size:13px;
+    }
+    .form-error.show{display:block}
+    .success{
+      display:none;
+      padding:52px 10px;
+      text-align:center;
+    }
+    .success.show{display:block}
+    .success-icon{
+      width:48px;
+      height:48px;
+      margin:0 auto 18px;
+      display:grid;
+      place-items:center;
+      border-radius:50%;
+      border:1px solid var(--accent-line);
+      background:var(--accent-soft);
+      color:#EEF0FF;
+    }
+    .success h3{
+      margin:0;
+      font-size:28px;
+      letter-spacing:-.035em;
+    }
+    .success p{
+      max-width:420px;
+      margin:12px auto 0;
+      color:var(--muted);
+      line-height:1.62;
+    }
+
+    @media(max-width:920px){
+      .nav-center{display:none}
+      .hero{padding:96px 0}
+      .facts{grid-template-columns:1fr 1fr}
+      .section{padding:92px 0}
+      .bento{grid-template-columns:1fr}
+      .mentor-card,.network-card,.funding-card,.example-card,.origins-card{grid-column:auto}
+      .cohort-layout{grid-template-columns:1fr;gap:48px}
+      .event-timeline{grid-template-columns:1fr;gap:34px}
+      .event-timeline::before{display:none}
+      .timeline-event,.timeline-event + .timeline-event{
+        min-height:0;
+        padding:0;
+        border-left:none;
+      }
+      .timeline-date{margin-top:20px}
+      .cta-card{padding:38px 28px}
+    }
+
+    @media(max-width:640px){
+      .container{width:min(var(--max),calc(100% - 28px))}
+      .nav-actions .contact-nav{display:none}
+      .hero{padding:78px 0 82px}
+      h1{font-size:clamp(44px,13vw,58px)}
+      .hero-sub{font-size:16px}
+      .facts{grid-template-columns:1fr 1fr;gap:24px 14px}
+      .section{padding:78px 0}
+      .section-title{font-size:38px}
+      .card{padding:24px}
+      .match-body{grid-template-columns:1fr}
+      .match-arrow{text-align:center;transform:rotate(90deg)}
+      .origin-grid{grid-template-columns:1fr}
+      .team-row{grid-template-columns:1fr auto}
+      .team-role{grid-column:1}
+      .team-chevron{grid-column:2;grid-row:1 / span 2}
+      .cta-card{padding:32px 22px}
+      .footer-inner{flex-direction:column;align-items:flex-start}
+      .form-row{grid-template-columns:1fr}
+      .modal{padding:11px}
+      .modal-card{padding:24px 18px}
+      .modal h2{font-size:30px}
+    }
+  </style>
+</head>
+<body>
+  <div class="page-bg"></div>
+  <div class="grid-overlay"></div>
+
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a class="brand" href="#top">
+        <span class="logo-mark">YA</span>
+        <span>Youth Accelerator</span>
+      </a>
+
+      <div class="nav-center">
+        <a href="#program">Program</a>
+        <a href="#cohort">Cohort</a>
+        <a href="#events">Events</a>
+        <a href="#team">Team</a>
+      </div>
+
+      <div class="nav-actions">
+        <button class="btn btn-ghost contact-nav" data-open-modal="contact">Contact</button>
+        <button class="btn btn-accent" data-open-modal="founder">
+          Apply
+          <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14"/><path d="m13 6 6 6-6 6"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <section class="hero" id="top">
+      <div class="container">
+        <div class="hero-copy">
+          <div class="pill-row">
+            <span class="pill accent"><span class="pill-dot"></span>Cohort One</span>
+            <span class="pill">Applications close October 31, 2026</span>
+          </div>
+
+          <h1>Ambition should not wait for <span class="hero-em">access.</span></h1>
+
+          <p class="hero-sub">
+            Youth Accelerator is a global accelerator for ambitious young founders.
+            We connect founders with mentorship, network access, and funding opportunities.
+          </p>
+
+          <div class="hero-actions">
+            <button class="btn btn-primary" data-open-modal="founder">
+              Apply as a founder
+              <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h14"/><path d="m13 6 6 6-6 6"/>
+              </svg>
+            </button>
+
+            <button class="btn btn-ghost" data-open-modal="mentor">
+              Apply to mentor
+              <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h14"/><path d="m13 6 6 6-6 6"/>
+              </svg>
+            </button>
+
+            <button class="btn btn-ghost" data-open-modal="contact">Contact</button>
+          </div>
+        </div>
+
+        <div class="facts">
+          <div class="fact">
+            <div class="fact-value">15–20</div>
+            <div class="fact-label">Founders in Cohort One</div>
+          </div>
+          <div class="fact">
+            <div class="fact-value serif">Global</div>
+            <div class="fact-label">No location requirement</div>
+          </div>
+          <div class="fact">
+            <div class="fact-value">All stages</div>
+            <div class="fact-label">Idea to early revenue</div>
+          </div>
+          <div class="fact">
+            <div class="fact-value serif">Mentor-led</div>
+            <div class="fact-label">Support built around each founder</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="program">
+      <div class="container">
+        <div class="editorial">The accelerator</div>
+        <h2 class="section-title">Mentorship first. Network around it. Funding when useful.</h2>
+        <p class="section-copy">
+          Every accepted founder gets direct mentorship, with introductions and resources shaped around the company.
+        </p>
+
+        <div class="bento">
+          <article class="card mentor-card">
+            <div class="card-kicker">Mentorship</div>
+            <h3>Match founders to people who can actually help.</h3>
+            <p>
+              We match founders based on the company, its stage, and the challenge in front of them.
+            </p>
+
+            <div class="match-ui">
+              <div class="match-head">
+                <span><span class="match-dot"></span>Example match</span>
+                <span>Founder specific</span>
+              </div>
+              <div class="match-body">
+                <div class="match-panel">
+                  <div class="match-label">Founder</div>
+                  <div class="match-name">3D-printed scale aircraft</div>
+                  <div class="match-chips">
+                    <span>Trademark</span>
+                    <span>Platform compliance</span>
+                  </div>
+                </div>
+
+                <div class="match-arrow">→</div>
+
+                <div class="match-panel">
+                  <div class="match-label">Mentor fit</div>
+                  <div class="match-name">Technology lawyer</div>
+                  <div class="match-chips">
+                    <span>IP</span>
+                    <span>Compliance</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="card network-card">
+            <div class="card-kicker">Network</div>
+            <h3>Introductions across the startup ecosystem.</h3>
+            <p>
+              Founders can connect with operators, investors, specialists, and other young founders across geographies.
+            </p>
+
+            <div class="origin-grid">
+              <div class="origin">Operators</div>
+              <div class="origin">Investors</div>
+              <div class="origin">Founders</div>
+            </div>
+          </article>
+
+          <article class="card funding-card">
+            <div class="card-kicker">Funding</div>
+            <h3>A funding pathway for select founders.</h3>
+            <p>
+              We are developing funding opportunities for select companies in the program.
+            </p>
+
+          </article>
+
+          <article class="card example-card principle-card">
+            <div class="card-kicker">What we look for</div>
+            <p class="principle-copy">
+              Ambition, initiative, and evidence that you are serious about building.
+            </p>
+          </article>
+
+          <article class="card origins-card">
+            <div class="card-kicker">Current mentor network</div>
+            <h3>Current mentors include people from:</h3>
+
+            <div class="origin-grid">
+              <div class="origin">SE Ventures</div>
+              <div class="origin">Overture Ventures</div>
+              <div class="origin">Stanford</div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="cohort">
+      <div class="container cohort-layout">
+        <div>
+          <div class="editorial">Cohort One</div>
+          <h2 class="section-title">No location requirement. No preferred stage.</h2>
+          <p class="section-copy">
+            We care about the quality of the founder and the seriousness of what they are building
+            more than credentials, geography, or whether the company is still at the idea stage.
+          </p>
+        </div>
+
+        <div class="plain-steps">
+          <div class="plain-step">
+            <div class="plain-num">01</div>
+            <div>
+              <h3>Apply</h3>
+              <p>Tell us what you are building, what exists today, and where you need help.</p>
+            </div>
+          </div>
+          <div class="plain-step">
+            <div class="plain-num">02</div>
+            <div>
+              <h3>Get matched</h3>
+              <p>Accepted founders receive direct mentorship based on the company and its current needs.</p>
+            </div>
+          </div>
+          <div class="plain-step">
+            <div class="plain-num">03</div>
+            <div>
+              <h3>Use the network</h3>
+              <p>Introductions connect founders with people who can help.</p>
+            </div>
+          </div>
+          <div class="plain-step">
+            <div class="plain-num">04</div>
+            <div>
+              <h3>Build</h3>
+              <p>Founders keep building with mentor and network support.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="events">
+      <div class="container">
+        <div class="editorial">In person</div>
+        <h2 class="section-title">Beyond the screen.</h2>
+        <p class="section-copy">
+          In-person events bring founders into startup ecosystems across regions.
+        </p>
+
+        <div class="event-timeline">
+          <article class="timeline-event">
+            <div class="timeline-dot">01</div>
+            <div class="timeline-date">Early January 2027</div>
+            <div class="timeline-location">Manila, Philippines</div>
+            <h3>Southeast Asia Founder Event</h3>
+            <p>
+              An in-person event bringing founders, mentors, and operators together around the region's startup ecosystem.
+            </p>
+          </article>
+
+          <article class="timeline-event">
+            <div class="timeline-dot">02</div>
+            <div class="timeline-date">Spring 2027</div>
+            <div class="timeline-location">Stanford, California</div>
+            <h3>Youth Accelerator Stanford Hackathon</h3>
+            <p>
+              A founder-focused hackathon hosted at Stanford around ambitious teams, rapid building, and startup mentorship.
+            </p>
+          </article>
+
+          <article class="timeline-event">
+            <div class="timeline-dot">03</div>
+            <div class="timeline-date">To be confirmed</div>
+            <div class="timeline-location">Location to be announced</div>
+            <h3>Third Global Event</h3>
+            <p>
+              Location and format to be announced.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="team">
+      <div class="container">
+        <div class="editorial">Team</div>
+        <h2 class="section-title">The people building Youth Accelerator.</h2>
+
+        <div class="team-list">
+          <a class="team-row" href="https://www.linkedin.com/in/vihaan-chaturvedy-719343274/" target="_blank" rel="noopener noreferrer">
+            <div class="team-name">Vihaan Chaturvedy</div>
+            <div class="team-role">Co-founder & President</div>
+            <div class="team-chevron">↗</div>
+          </a>
+          <a class="team-row" href="https://www.linkedin.com/in/cooper-williams-414793361" target="_blank" rel="noopener noreferrer">
+            <div class="team-name">Cooper Williams</div>
+            <div class="team-role">Co-founder & Finance Lead</div>
+            <div class="team-chevron">↗</div>
+          </a>
+          <a class="team-row" href="https://www.linkedin.com/in/veer-bhandari-76968a422/" target="_blank" rel="noopener noreferrer">
+            <div class="team-name">Veer Bhandari</div>
+            <div class="team-role">Partnerships & Tech Co-Lead</div>
+            <div class="team-chevron">↗</div>
+          </a>
+          <a class="team-row" href="https://www.linkedin.com/in/carson-middleton-a50883324/" target="_blank" rel="noopener noreferrer">
+            <div class="team-name">Carson Middleton</div>
+            <div class="team-role">Co-founder & Operations Lead</div>
+            <div class="team-chevron">↗</div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="cta-card">
+          <div class="editorial">Cohort One</div>
+          <h2>Applications close October 31.</h2>
+          <p>
+            Founders can apply at any stage.
+          </p>
+
+          <div class="cta-actions">
+            <button class="btn btn-primary" data-open-modal="founder">
+              Apply as a founder
+              <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h14"/><path d="m13 6 6 6-6 6"/>
+              </svg>
+            </button>
+
+            <button class="btn btn-ghost" data-open-modal="mentor">
+              Join as a mentor
+              <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h14"/><path d="m13 6 6 6-6 6"/>
+              </svg>
+            </button>
+
+            <button class="btn btn-ghost" data-open-modal="contact">Contact</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <div class="brand">
+        <span class="logo-mark">YA</span>
+        <span>Youth Accelerator</span>
+      </div>
+
+      <div class="footer-links">
+        <a href="mailto:youthaccel@gmail.com">youthaccel@gmail.com</a>
+        <button data-open-modal="contact">Contact</button>
+      </div>
+
+      <div>© <span id="year"></span> Youth Accelerator</div>
+    </div>
+  </footer>
+
+  <!-- Founder application -->
+  <div class="modal" id="founder-modal" aria-hidden="true">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="founder-title">
+      <button class="modal-close" data-close-modal aria-label="Close">×</button>
+
+      <div id="founder-form-view">
+        <span class="pill accent">Cohort One</span>
+        <h2 id="founder-title">Apply as a founder.</h2>
+        <p class="modal-intro">
+          Tell us what you are building, your progress so far, and where support would help.
+        </p>
+
+        <form class="form" data-form-type="founder" action="https://formspree.io/f/mqpayjdj" method="POST">
+          <input type="hidden" name="application_type" value="founder">
+          <input type="hidden" name="_subject" value="Youth Accelerator Founder Application">
+
+          <div class="form-row">
+            <label>
+              Name
+              <input name="name" type="text" required placeholder="Your name">
+            </label>
+
+            <label>
+              Email
+              <input name="email" type="email" required placeholder="you@email.com">
+            </label>
+          </div>
+
+          <div class="form-row">
+            <label>
+              School or location
+              <input name="school_or_location" type="text" placeholder="School, city, or country">
+            </label>
+
+            <label>
+              Company or project link
+              <input name="company_link" type="url" placeholder="https://">
+            </label>
+          </div>
+
+          <label>
+            What are you building, and what progress have you made?
+            <textarea name="company_and_progress" required placeholder="Tell us what exists today, not just the idea."></textarea>
+          </label>
+
+          <label>
+            What would make Youth Accelerator most useful to you?
+            <textarea name="support_needed" required placeholder="Mentorship, introductions, fundraising, technical help, or something else."></textarea>
+          </label>
+
+          <div class="form-error"></div>
+
+          <button class="btn btn-primary submit" type="submit">
+            <span>Submit founder application</span>
+            <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14"/><path d="m13 6 6 6-6 6"/>
+            </svg>
+          </button>
+        </form>
+      </div>
+
+      <div class="success" id="founder-success">
+        <div class="success-icon">✓</div>
+        <h3>Application received.</h3>
+        <p>We will review it and follow up if there is a strong fit.</p>
+        <button class="btn btn-primary" data-close-modal style="margin-top:24px;">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mentor application -->
+  <div class="modal" id="mentor-modal" aria-hidden="true">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="mentor-title">
+      <button class="modal-close" data-close-modal aria-label="Close">×</button>
+
+      <div id="mentor-form-view">
+        <span class="pill accent">Mentor Network</span>
+        <h2 id="mentor-title">Apply to mentor.</h2>
+        <p class="modal-intro">
+          We are looking for founders, investors, operators, and domain experts who can be useful to ambitious young builders.
+        </p>
+
+        <form class="form" data-form-type="mentor" action="https://formspree.io/f/mqpayjdj" method="POST">
+          <input type="hidden" name="application_type" value="mentor">
+          <input type="hidden" name="_subject" value="Youth Accelerator Mentor Application">
+
+          <div class="form-row">
+            <label>
+              Name
+              <input name="name" type="text" required placeholder="Your name">
+            </label>
+
+            <label>
+              Email
+              <input name="email" type="email" required placeholder="you@email.com">
+            </label>
+          </div>
+
+          <div class="form-row">
+            <label>
+              Role and organization
+              <input name="role_and_org" type="text" required placeholder="Founder, investor, operator...">
+            </label>
+
+            <label>
+              LinkedIn
+              <input name="linkedin" type="url" placeholder="https://linkedin.com/in/...">
+            </label>
+          </div>
+
+          <label>
+            Where can you be most useful?
+            <textarea name="expertise" required placeholder="Sector expertise, fundraising, product, legal, technical, distribution, hiring..."></textarea>
+          </label>
+
+          <div class="form-error"></div>
+
+          <button class="btn btn-primary submit" type="submit">
+            <span>Submit mentor application</span>
+            <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14"/><path d="m13 6 6 6-6 6"/>
+            </svg>
+          </button>
+        </form>
+      </div>
+
+      <div class="success" id="mentor-success">
+        <div class="success-icon">✓</div>
+        <h3>Application received.</h3>
+        <p>We will review it and follow up if there is a strong fit.</p>
+        <button class="btn btn-primary" data-close-modal style="margin-top:24px;">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contact -->
+  <div class="modal" id="contact-modal" aria-hidden="true">
+    <div class="modal-card contact-card" role="dialog" aria-modal="true" aria-labelledby="contact-title">
+      <button class="modal-close" data-close-modal aria-label="Close">×</button>
+
+      <div id="contact-form-view">
+        <span class="pill accent">Contact</span>
+        <h2 id="contact-title">Start a conversation.</h2>
+        <p class="modal-intro">
+          Founder questions, mentor interest, partnerships, events, or anything else related to Youth Accelerator.
+        </p>
+
+        <div class="contact-direct">
+          <div class="contact-direct-label">Email directly</div>
+          <a href="mailto:youthaccel@gmail.com">youthaccel@gmail.com</a>
+        </div>
+
+        <form class="form" data-form-type="contact" action="https://formspree.io/f/mqpayjdj" method="POST">
+          <input type="hidden" name="application_type" value="general_contact">
+          <input type="hidden" name="_subject" value="Youth Accelerator Contact Form">
+
+          <div class="form-row">
+            <label>
+              Name
+              <input name="name" type="text" required placeholder="Your name">
+            </label>
+
+            <label>
+              Email
+              <input name="email" type="email" required placeholder="you@email.com">
+            </label>
+          </div>
+
+          <label>
+            What is this about?
+            <select name="topic" required>
+              <option value="">Select one</option>
+              <option>Founder question</option>
+              <option>Mentorship</option>
+              <option>Partnership</option>
+              <option>Event</option>
+              <option>Press or media</option>
+              <option>Other</option>
+            </select>
+          </label>
+
+          <label>
+            Message
+            <textarea name="message" required placeholder="What should we know?"></textarea>
+          </label>
+
+          <div class="form-error"></div>
+
+          <button class="btn btn-primary submit" type="submit">
+            <span>Send message</span>
+            <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14"/><path d="m13 6 6 6-6 6"/>
+            </svg>
+          </button>
+        </form>
+      </div>
+
+      <div class="success" id="contact-success">
+        <div class="success-icon">✓</div>
+        <h3>Message sent.</h3>
+        <p>Thanks. We will get back to you at the email you provided.</p>
+        <button class="btn btn-primary" data-close-modal style="margin-top:24px;">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const endpoint = "https://formspree.io/f/mqpayjdj";
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    function openModal(type){
+      const modal = document.getElementById(type + "-modal");
+      if(!modal) return;
+      modal.classList.add("open");
+      modal.setAttribute("aria-hidden","false");
+      document.body.classList.add("modal-open");
+    }
+
+    function closeModal(modal){
+      if(!modal) return;
+      modal.classList.remove("open");
+      modal.setAttribute("aria-hidden","true");
+      document.body.classList.remove("modal-open");
+    }
+
+    document.querySelectorAll("[data-open-modal]").forEach(button => {
+      button.addEventListener("click", () => openModal(button.dataset.openModal));
+    });
+
+    document.querySelectorAll("[data-close-modal]").forEach(button => {
+      button.addEventListener("click", () => closeModal(button.closest(".modal")));
+    });
+
+    document.querySelectorAll(".modal").forEach(modal => {
+      modal.addEventListener("mousedown", event => {
+        if(event.target === modal) closeModal(modal);
+      });
+    });
+
+    document.addEventListener("keydown", event => {
+      if(event.key === "Escape"){
+        closeModal(document.querySelector(".modal.open"));
+      }
+    });
+
+    document.querySelectorAll("form[data-form-type]").forEach(form => {
+      form.addEventListener("submit", async event => {
+        event.preventDefault();
+
+        const type = form.dataset.formType;
+        const submit = form.querySelector('button[type="submit"]');
+        const submitLabel = submit.querySelector("span");
+        const errorBox = form.querySelector(".form-error");
+        const original = submitLabel.textContent;
+
+        errorBox.classList.remove("show");
+        errorBox.textContent = "";
+        submit.disabled = true;
+        submit.style.opacity = ".6";
+        submitLabel.textContent = type === "contact" ? "Sending..." : "Submitting...";
+
+        try{
+          const response = await fetch(endpoint,{
+            method:"POST",
+            body:new FormData(form),
+            headers:{Accept:"application/json"}
+          });
+
+          if(!response.ok){
+            let message = "Something went wrong. Please try again.";
+            try{
+              const payload = await response.json();
+              if(payload.errors && payload.errors.length){
+                message = payload.errors.map(error => error.message).join(", ");
+              }
+            }catch(_){}
+            throw new Error(message);
+          }
+
+          form.reset();
+          document.getElementById(type + "-form-view").style.display = "none";
+          document.getElementById(type + "-success").classList.add("show");
+        }catch(error){
+          errorBox.textContent = error.message || "Something went wrong. Please try again.";
+          errorBox.classList.add("show");
+        }finally{
+          submit.disabled = false;
+          submit.style.opacity = "1";
+          submitLabel.textContent = original;
+        }
+      });
+    });
+  </script>
+</body>
+</html>
